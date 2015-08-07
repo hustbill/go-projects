@@ -12,5 +12,10 @@ func add(args ...int) int {
 
 func main() {
     fmt.Println(add(1,2,3))
+
+    xs := [] int{1, 2, 3}
+    
+    fmt.Println("\nsum of xs = ")
+    fmt.Println(add(xs...))
 }
 
