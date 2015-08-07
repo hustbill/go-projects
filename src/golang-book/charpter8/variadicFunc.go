@@ -17,5 +17,12 @@ func main() {
     
     fmt.Println("\nsum of xs = ")
     fmt.Println(add(xs...))
+
+    // Closure:  create function inside of function
+    add := func(x, y int) int {
+        return x + y
+    }
+    fmt.Println("add(1,1) = ")
+    fmt.Println(add(1,1))
 }
 
