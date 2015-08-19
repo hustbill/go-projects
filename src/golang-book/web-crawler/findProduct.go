@@ -68,7 +68,7 @@ func readContent(url string) (content string) {
  
 func main() {
     fmt.Println(`Get index ...`)
-    s, statusCode := Get("https://github.com/hustbill")
+    s, statusCode := Get("http://www.stelladot.com/shop/en_us/jewelry")
     if statusCode != 200 {
         return
     }
