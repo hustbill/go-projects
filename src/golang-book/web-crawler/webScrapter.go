@@ -9,6 +9,7 @@ import (
     "github.com/opesun/goquery"
     "os"
     "strings"
+    "io/ioutil"
 )
 
 
@@ -22,12 +23,25 @@ func fetchProductName(url string){
         fmt.Println(pTitle)
 
         productList := p.Find(".product-name")
+        priceList := p.Find(".product_price")
         for i := 0; i < productList.Length(); i++ {
-            product:= productList.Eq(i).Text()
-            fmt.Println(product)
+            product := productList.Eq(i).Text()
+            price := priceList.Eq(i).Text()
+           fmt.Println(product + ": " + price)
+           
         }
      
     }
+}
+
+// make an HTTP request 
+func makeHttpReq(url string) {
+    resp, _ := http.Get(url)
+    bytes, _ := ioutil.ReadAll(resp.Body)
+
+    fmt.Println("HTML:\n\n", string(bytes))
+
+    resp.Body.Close()
 }
 
 
@@ -98,8 +112,9 @@ func crawl(url string, ch chan string, chFinished chan bool) {
 
 func main() {
     //testUrl := "http://www.stelladot.com/shop/en_us/jewelry/rings"
+    //makeHttpReq(testUrl)
     //fetchProductName(testUrl)
-   // fetchProductName(os.Args[1])
+    //fetchProductName(os.Args[1])
    
    foundUrls := make(map[string]bool)
    seedUrls := os.Args[1:]
