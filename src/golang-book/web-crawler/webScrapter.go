@@ -8,26 +8,12 @@ import (
     "golang.org/x/net/html"
     "github.com/opesun/goquery"
     "os"
-   //"strings"
+    "strings"
 )
 
 
-
-// Helper function to pull the product-name attribute from a Token
-func getProductName(t html.Token) (ok bool, href string) {
-    // Iterate over all of the Token's attributes until we find an "strong class"
-    for _, a := range t.Attr {
-        if a.Key == "strong class" {
-            href = a.Val
-            ok = true
-        }
-    }
-    
-    return 
-}
-
 // use Goquery to fetech product-name from html
-func useGoQuery(url string){
+func fetchProductName(url string){
     p, err := goquery.ParseUrl(url)
     if err != nil {
         panic(err)
@@ -45,95 +31,92 @@ func useGoQuery(url string){
 }
 
 
+// Helper function to pull the href attribute from a Token
+func getHref(t html.Token) (ok bool, href string) {
+    // Iterate over all of the Token's attributes until we find an "href"
+    for _, a := range t.Attr {
+        if a.Key == "href" {
+            href = a.Val
+            ok = true
+        }
+    }
 
-// Make an HTTP request //
-func makeHttpReq(url string) {
-    resp, _ := http.Get(url)
-    // bytes, _ := ioutil.ReadAll(resp.Body)
- //
- //
- //
- //    fmt.Println("HTML:\n\n", string(bytes))
-    resp.Body.Close()
+    // "bare" return will return the variables (ok, href) as defined in
+    // the function definition
+    return
 }
 
 
-// Extract all http**  links from a given webpage
+// Extract all http** links from a given webpage
 func crawl(url string, ch chan string, chFinished chan bool) {
-    fmt.Println(url)
     resp, err := http.Get(url)
-  
-    
+
     defer func() {
         // Notify that we're done after this function
         chFinished <- true
     }()
-    
+
     if err != nil {
         fmt.Println("ERROR: Failed to crawl \"" + url + "\"")
         return
     }
-    
+
     b := resp.Body
     defer b.Close() // close Body when the function returns
-    
+
     z := html.NewTokenizer(b)
-    
+
     for {
         tt := z.Next()
-        
+
         switch {
-        case  tt == html.ErrorToken:
+        case tt == html.ErrorToken:
             // End of the document, we're done
             return
         case tt == html.StartTagToken:
             t := z.Token()
-            
-            // Check if the token is an <strong class> tag
-            isAnchor := t.Data == "strong class"
+
+            // Check if the token is an <a> tag
+            isAnchor := t.Data == "a"
             if !isAnchor {
                 continue
             }
-            
+
             // Extract the href value, if there is one
-            ok, url := getProductName(t)
-            fmt.Println(url)
+            ok, url := getHref(t)
             if !ok {
                 continue
             }
             
-            ch <- url
-            
-            // // Make sure the url begines in http**
-   //          hasProto := strings.Index(url, "http") == 0
-   //          if hasProto {
-   //              ch <- url
-   //          }
-            
+
+            //Make sure the url includes in shop
+            hasProto := strings.Count(url, "shop") > 0
+            if hasProto {
+                ch <- url
+            }
         }
     }
 }
 
 
-
-
 func main() {
-    testUrl := "http://www.stelladot.com/shop/en_us/jewelry/rings"
-    makeHttpReq(testUrl)
-    useGoQuery(testUrl)
+    //testUrl := "http://www.stelladot.com/shop/en_us/jewelry/rings"
+    //fetchProductName(testUrl)
     
-    foundUrls := make(map[string]bool)
+   // fetchProductName(os.Args[1])
+    
+   foundUrls := make(map[string]bool)
     seedUrls := os.Args[1:]
-    
-    //  Channels 
+
+    // Channels
     chUrls := make(chan string)
-    chFinished := make(chan bool)
-    
+    chFinished := make(chan bool) 
+
     // Kick off the crawl process (concurrently)
     for _, url := range seedUrls {
         go crawl(url, chUrls, chFinished)
     }
-    
+
     // Subscribe to both channels
     for c := 0; c < len(seedUrls); {
         select {
@@ -143,14 +126,27 @@ func main() {
             c++
         }
     }
-    
-    
-    // We're done! Print the results...
-    
+
+    // We're done! Print the all URLs...
+
     fmt.Println("\nFound", len(foundUrls), "unique urls:\n")
-    
+
     for url, _ := range foundUrls {
+        
+        hasProto := strings.Index(url, "http") == 0
+        if !hasProto {
+            url = "http://www.stelladot.com" + url
+        }
+        fetchProductName(url)
         fmt.Println(" - " + url)
     }
+
+    
     close(chUrls)
+    
 }
+
+
+// Reference:
+// (1)  http://schier.co/blog/2015/04/26/a-simple-web-scraper-in-go.html
+// (2)  github.com/opesun/goquery
