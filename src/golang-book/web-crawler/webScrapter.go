@@ -18,7 +18,7 @@ func fetchProductName(url string){
     if err != nil {
         panic(err)
     } else {
-        pTitle := p.Find("title").Text()//直接提取title的内容
+        pTitle := p.Find("title").Text()// fetch the content of title
         fmt.Println(pTitle)
 
         productList := p.Find(".product-name")
