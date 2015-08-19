@@ -12,7 +12,7 @@ import (
 )
 
 
-// use Goquery to fetech product-name from html
+// use Goquery to fetch product-name from html
 func fetchProductName(url string){
     p, err := goquery.ParseUrl(url)
     if err != nil {
