@@ -40,14 +40,11 @@ func getHref(t html.Token) (ok bool, href string) {
             ok = true
         }
     }
-
-    // "bare" return will return the variables (ok, href) as defined in
-    // the function definition
     return
 }
 
 
-// Extract all http** links from a given webpage
+// Extract all shop related links from a given webpage
 func crawl(url string, ch chan string, chFinished chan bool) {
     resp, err := http.Get(url)
 
@@ -89,7 +86,7 @@ func crawl(url string, ch chan string, chFinished chan bool) {
             }
             
 
-            //Make sure the url includes in shop
+            //Make sure the url includes in "shop"
             hasProto := strings.Count(url, "shop") > 0
             if hasProto {
                 ch <- url
@@ -102,11 +99,10 @@ func crawl(url string, ch chan string, chFinished chan bool) {
 func main() {
     //testUrl := "http://www.stelladot.com/shop/en_us/jewelry/rings"
     //fetchProductName(testUrl)
-    
    // fetchProductName(os.Args[1])
-    
+   
    foundUrls := make(map[string]bool)
-    seedUrls := os.Args[1:]
+   seedUrls := os.Args[1:]
 
     // Channels
     chUrls := make(chan string)
@@ -127,20 +123,21 @@ func main() {
         }
     }
 
-    // We're done! Print the all URLs...
-
+    // We're done! Print the URLs and Product-name ...
     fmt.Println("\nFound", len(foundUrls), "unique urls:\n")
 
     for url, _ := range foundUrls {
         
         hasProto := strings.Index(url, "http") == 0
+        
         if !hasProto {
             url = "http://www.stelladot.com" + url
         }
-        fetchProductName(url)
+        
         fmt.Println(" - " + url)
+        
+        fetchProductName(url)  
     }
-
     
     close(chUrls)
     
