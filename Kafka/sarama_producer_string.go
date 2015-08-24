@@ -75,3 +75,4 @@ A9
 // [1].  https://gist.github.com/rayrod2030/8387924
 // [2]. https://github.com/Shopify/sarama/blob/b86f86267368b80ae9aa3ae54306422c029e407d/functional_producer_test.go
 // [3]. https://gist.github.com/JnBrymn/6fc38872b4d312886908
+// [4]. https://github.com/Shopify/sarama/issues/116
