@@ -1,0 +1,7 @@
+github.com/gomodule/redigo v2.0.0+incompatible h1:K/R+8tc58AaqLkqG2Ol3Qk+DR/TlNuhuh457pBFPtt0=
+github.com/gomodule/redigo v2.0.0+incompatible/go.mod h1:B4C85qUVwatsJoIUNIfCRsp7qO0iAmpGFZ4EELWSbC4=
+github.com/xyproto/pinterface v0.0.0-20200201214933-70763765f31f/go.mod h1:X5B5pKE49ak7SpyDh5QvJvLH9cC9XuZNDcl5hEyYc34=
+github.com/xyproto/pinterface v0.0.0-20211009195247-f633d6c15725 h1:yglVif0JI18gCC9L42G7Q+Dm2+oNRA+HZyO+qh41Nas=
+github.com/xyproto/pinterface v0.0.0-20211009195247-f633d6c15725/go.mod h1:X5B5pKE49ak7SpyDh5QvJvLH9cC9XuZNDcl5hEyYc34=
+github.com/xyproto/simpleredis v0.0.0-20201022102402-3ef49f016e6f h1:z2oGM/3hoFimxCTHOkaiOm6Fj+ELQh663Sz5EHUk4xs=
+github.com/xyproto/simpleredis v0.0.0-20201022102402-3ef49f016e6f/go.mod h1:U/ZOQqa0ggBGPs+d0y7r50BY6FyFTh5WhWf7F8f1MBM=
