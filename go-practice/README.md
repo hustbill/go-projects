@@ -11,6 +11,7 @@ select 随机执行一个可运行的 case。如果没有 case 可运行，它�
 ### ctx.Done()
 ctx.Done() means that we receive the order to finish our work.  In this case, we will interrupt the loop, log a message and return.
 
+详细请参考[这一章](https://www.practical-go-lessons.com/chap-37-context) 
 
 > 在上面的程序中
 we will use a channel to communicate with the caller. We create a for loop, and inside that loop, we will put a select statement. In this select statement, we have two cases :
