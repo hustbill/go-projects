@@ -15,7 +15,8 @@ func main() {
 
 }
 
-//We're going to use a HashMap and do a single pass on our array while keeping track of the numbers we encounceter and their indexes
+// We're going to use a HashMap and do a single pass on our array
+// while keeping track of the numbers we encounceter and their indexes
 func twoSum(nums []int, target int) []int {
 	m := make(map[int]int)
 	for idx, num := range nums {
